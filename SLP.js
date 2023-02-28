@@ -101,6 +101,7 @@ class Signforus{
 		//outerDiv.style.background = 'rgba(255,255,255,1)';;
 		outerDiv.style.top = '100px';
 		outerDiv.style.right = '0px';
+		outerDiv.style.zIndex = '999999';
 		outerDiv.style.position = 'fixed';
 		/*outer DIV end*/
 
@@ -147,6 +148,7 @@ class Signforus{
 		viewBox.style.overflow = 'hidden';
 		viewBox.style.zIndex = '999999';
 		viewBox.style.boxShadow = '5px 5px 4px rgba(0,0,0,0.25)';
+		viewBox.style.display = 'none';
 		/*viewer Box end */
 
 		/*video Box */
@@ -178,14 +180,15 @@ class Signforus{
 
 		document.body.appendChild(outerDiv);
 
-		$('#tg_suer').on('click',function(){
+		/*$('#tg_suer').on('click',function(){
+			var me = Signforus.getInstance();
 			var visible = $('#div_suer').attr('visible');
 			if(visible == undefined || visible == "false"){ 
-				activeStyleBtn();
+				me.activeStyleBtn();
 			}else{ 
-				inactiveStyleBtn();
+				me.inactiveStyleBtn();
 			}
-		});
+		});*/
 			
 		//var tgbtn = document.getElementById('tg_suer');	//	inner button tooltip
 
