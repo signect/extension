@@ -92,52 +92,144 @@ class Signforus{
 			this.objectScript = "http://localhost:8080/tmpl/assets/js/signforus_object.js";
 		}
 		
-		$.getScript(this.objectScript, function(response, status){
+		//$.getScript(this.objectScript, function(response, status){
 			//alert("loaded component!");
-			
-			var tgbtn = document.getElementById('tg_suer');	//	inner button tooltip
+		var message = '수어통역';
+		/*outer DIV */
+		const outerDiv = document.createElement('div');	//	outer div
+		outerDiv.id = 'outer_suer';
+		//outerDiv.style.background = 'rgba(255,255,255,1)';;
+		outerDiv.style.top = '100px';
+		outerDiv.style.right = '0px';
+		outerDiv.style.position = 'fixed';
+		/*outer DIV end*/
 
-			/*버튼 tooltip On */
-			const t_turnOn = ((evt) => {
-				var ttBox = document.getElementById('signforus_tooltip');
-			    const boundBox = evt.target.getBoundingClientRect();
-			    const coordX = boundBox.left;
-			    const coordY = boundBox.top;
-			    ttBox.style.left = (coordX).toString() + "px";
-			    ttBox.style.top = (coordY + 60).toString() + "px";
-			    
-			    if(Signforus.getInstance().isActiveSignforus()){ 
-					ttBox.innerHTML ="Sign On";
-				}else{ 
-					ttBox.innerHTML ="Sign Off";
-				}
-			    ttBox.style.visibility = "visible";
-			});
-			/*버튼 tooltip Off */
-			const t_turnOff = (() => {
-				var ttBox = document.getElementById('signforus_tooltip');
-				ttBox.style.visibility = "hidden";
-			});
+		/*button */
+		const tgbtn = document.createElement('input');	//	inner button
+		tgbtn.id = 'tg_suer';
+		tgbtn.type = 'button';
+		tgbtn.style.width = '60px';
+		tgbtn.style.height = '60px';
+		tgbtn.style.right = '0px';
+		tgbtn.style.background ="url('http://signforus.co.kr/images/SLogOnly0.png')";
+		tgbtn.style.backgroundRepeat ='round';
+		tgbtn.style.opacity = '1';
+		tgbtn.style.overflow = 'hidden';
+		tgbtn.style.float = 'left';
+		outerDiv.appendChild(tgbtn);
+		/*button end*/
 
-			tgbtn.addEventListener("mouseover", t_turnOn, false);
-			tgbtn.addEventListener("mouseout", t_turnOff, false);
-			/*button tooltip end */
-			
-			
-			/* 수어 버튼 클릭*/
-			tgbtn.addEventListener("click", function(){
-				var me = Signforus.getInstance();
-				var actvice = me.isActiveSignforus();
-				if(!actvice){ 
-					me.activeStyleBtn();
-					tgbtn.style.backgroundColor = 'aliceblue';
-				}else{ 
-					me.inactiveStyleBtn();
-					tgbtn.style.backgroundColor = 'transparent';
-				}
-			});
-			
+		/*button tooltip */
+		const ttBox = document.createElement('div');	//	inner button tooltip
+		ttBox.id = "signforus_tooltip";
+		ttBox.style.visibility = "hidden"; // make it hidden till mouse over
+		ttBox.style.position = "fixed";
+		ttBox.style.top = "8px";
+		ttBox.style.left = "8px";
+		ttBox.style.width = "300px";
+		ttBox.style.borderRadius = "4px";
+		ttBox.style.border = "solid thin grey";
+		ttBox.style.backgroundColor = "rgba(26, 193, 183, 0.2)";
+		ttBox.style.opacity = '1';
+		document.body.appendChild(ttBox);
+
+
+		/*viewer Box */
+		const viewBox = document.createElement('div');	//	inner viewbox
+		viewBox.id = 'view_box';
+		viewBox.visible = 'false';
+		viewBox.style.position = "absolute";
+		viewBox.style.width = '320px';
+		viewBox.style.height = '250px';
+		viewBox.style.background ="rgba(237,250,245,1)";
+		viewBox.style.padding ="10px";
+		viewBox.style.opacity = '1';
+		viewBox.style.overflow = 'hidden';
+		viewBox.style.zIndex = '999999';
+		viewBox.style.boxShadow = '5px 5px 4px rgba(0,0,0,0.25)';
+		/*viewer Box end */
+
+		/*video Box */
+		const videoBox = document.createElement('div');	//	inner videobox
+		videoBox.id = 'div_suer';
+		videoBox.style.width = '300px';
+		videoBox.style.maxWidth = '300px';
+		viewBox.appendChild(videoBox);
+		/*video Box end */ 
+
+		/*video text*/ 
+		const txtDiv = document.createElement('div');	//	inner text
+		txtDiv.id = 'text_div';
+
+		const txtSpan = document.createElement('div');	//	inner text
+		txtSpan.id = 'text_suer';
+		txtSpan.value = 'text';
+		txtSpan.style.fontFamily= 'Montserrat';
+		txtSpan.style.fontWeight= 'bold';
+		txtSpan.style.fontSize= '15px';
+		txtSpan.style.textAlign = 'center';
+		txtSpan.style.color = 'rgba(0,0,0,1)';
+		txtDiv.appendChild(txtSpan);
+
+		viewBox.appendChild(txtDiv);
+		/*video text end */
+
+		document.body.appendChild(viewBox);
+
+		document.body.appendChild(outerDiv);
+
+		$('#tg_suer').on('click',function(){
+			var visible = $('#div_suer').attr('visible');
+			if(visible == undefined || visible == "false"){ 
+				activeStyleBtn();
+			}else{ 
+				inactiveStyleBtn();
+			}
 		});
+			
+		//var tgbtn = document.getElementById('tg_suer');	//	inner button tooltip
+
+		/*버튼 tooltip On */
+		const t_turnOn = ((evt) => {
+			var ttBox = document.getElementById('signforus_tooltip');
+		    const boundBox = evt.target.getBoundingClientRect();
+		    const coordX = boundBox.left;
+		    const coordY = boundBox.top;
+		    ttBox.style.left = (coordX).toString() + "px";
+		    ttBox.style.top = (coordY + 60).toString() + "px";
+		    
+		    if(Signforus.getInstance().isActiveSignforus()){ 
+				ttBox.innerHTML ="Sign On";
+			}else{ 
+				ttBox.innerHTML ="Sign Off";
+			}
+		    ttBox.style.visibility = "visible";
+		});
+		/*버튼 tooltip Off */
+		const t_turnOff = (() => {
+			var ttBox = document.getElementById('signforus_tooltip');
+			ttBox.style.visibility = "hidden";
+		});
+
+		tgbtn.addEventListener("mouseover", t_turnOn, false);
+		tgbtn.addEventListener("mouseout", t_turnOff, false);
+		/*button tooltip end */
+		
+		
+		/* 수어 버튼 클릭*/
+		tgbtn.addEventListener("click", function(){
+			var me = Signforus.getInstance();
+			var actvice = me.isActiveSignforus();
+			if(!actvice){ 
+				me.activeStyleBtn();
+				tgbtn.style.backgroundColor = 'aliceblue';
+			}else{ 
+				me.inactiveStyleBtn();
+				tgbtn.style.backgroundColor = 'transparent';
+			}
+		});
+			
+		//});
 	}
 	
 	/* 마우스 위치 */
@@ -271,7 +363,7 @@ class Signforus{
 	}
 }
 
-Window.Signforus = Signforus.getClass("localhost");
+Window.Signforus = Signforus.getClass("oper");
 
 const Signact = () => {
 	const signforus = Window.Signforus; 
